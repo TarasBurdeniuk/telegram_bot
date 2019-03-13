@@ -8,12 +8,12 @@ const bot = new TelegramBot(token, {polling: true});
 const http = require('http');
 const https = require('https');
 
-http.createServer().listen(process.env.PORT || 3030).on('request', function(req, res){
+http.createServer().listen(process.env.PORT || 3030).on('request', function (req, res) {
     res.end('')
 });
-setInterval(function(){
+setInterval(function () {
     https.get('https://telegrambotwhichshowsome.herokuapp.com/')
-},300000);
+}, 300000);
 
 // bot.onText(/\/start/, msg => {
 //     const chatId = msg.chat.id;
@@ -39,6 +39,10 @@ bot.on('message', msg => {
         // if (err) {
         //     throw new Error ('Something happen!');
         // }
+        if (!response) {
+            bot.sendMessage(id, 'Not valid city. Enter a latinic city name!');
+            return;
+        }
 
         let code = JSON.parse(response.body);
 
