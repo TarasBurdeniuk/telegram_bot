@@ -8,7 +8,7 @@ const bot = new TelegramBot(token, {polling: true});
 const http = require('http');
 const https = require('https');
 
-http.createServer().listen(process.env.PORT || 5000).on('request', function(req, res){
+http.createServer().listen(process.env.PORT || 3030).on('request', function(req, res){
     res.end('')
 });
 setInterval(function(){
@@ -36,9 +36,9 @@ bot.on('message', msg => {
     }
 
     request(`https://api.openweathermap.org/data/2.5/weather?q=${msg.text}&APPID=acb6d7f748d151361776b3eb027109c0`, function (err, response, body) {
-        if (err) {
-            throw new Error ('Something happen!');
-        }
+        // if (err) {
+        //     throw new Error ('Something happen!');
+        // }
 
         let code = JSON.parse(response.body);
 
