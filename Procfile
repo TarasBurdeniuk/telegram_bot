@@ -1,1 +1,1 @@
-web: node tel_bot.js
+web: node app.js
