@@ -27,9 +27,9 @@ bot.on('message',  async msg => {
     }
 
     request(`https://api.openweathermap.org/data/2.5/weather?q=${msg.text}&APPID=acb6d7f748d151361776b3eb027109c0`, function (err, response, body) {
-        if (err) {
-            throw new Error ('Something happen!');
-        }
+        // if (err) {
+        //     throw new Error ('Something happen!');
+        // }
         if (!response) {
             bot.sendMessage(id, 'Not valid city. Enter a latinic city name!');
             return;
