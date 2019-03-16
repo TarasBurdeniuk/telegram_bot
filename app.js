@@ -1,34 +1,25 @@
 const TelegramBot = require('node-telegram-bot-api');
 const request = require('request');
+const db = require('./db/db');
 const kelvinToCelsius = require('kelvin-to-celsius');
+const http = require('http');
+const https = require('https');
 
 const token = '708659022:AAGVfqTmwavAJg_gI4sZxRo0BnoRA9vD_PI';
 const bot = new TelegramBot(token, {polling: true});
 
-const http = require('http');
-const https = require('https');
 
-http.createServer().listen(process.env.PORT || 3030).on('request', function (req, res) {
+
+http.createServer().listen(process.env.PORT || 4000).on('request', function (req, res) {
     res.end('')
 });
 setInterval(function () {
     https.get('https://telegrambotwhichshowsome.herokuapp.com/')
 }, 300000);
 
-// bot.onText(/\/start/, msg => {
-//     const chatId = msg.chat.id;
-//
-//     bot.sendMessage(chatId, 'Please, enter city which you can see weather forecast');
-// });
-//
-// bot.onText(/\/forecast/, msg => {
-//     const chatId = msg.chat.id;
-//
-//     bot.sendMessage(chatId, 'enter city which you can see weather forecast');
-// });
-
-bot.on('message', msg => {
+bot.on('message',  async msg => {
     const id = msg.chat.id;
+    await db.addUser(id);
 
     if (msg.text === '/forecast' || msg.text === '/start') {
         bot.sendMessage(id, 'Enter a city to find out the weather forecast');
@@ -36,9 +27,9 @@ bot.on('message', msg => {
     }
 
     request(`https://api.openweathermap.org/data/2.5/weather?q=${msg.text}&APPID=acb6d7f748d151361776b3eb027109c0`, function (err, response, body) {
-        // if (err) {
-        //     throw new Error ('Something happen!');
-        // }
+        if (err) {
+            throw new Error ('Something happen!');
+        }
         if (!response) {
             bot.sendMessage(id, 'Not valid city. Enter a latinic city name!');
             return;
